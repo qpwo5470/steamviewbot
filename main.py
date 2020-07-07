@@ -48,7 +48,7 @@ def runBrowser(n, q):
                 # data = driver.find_element_by_xpath('/html/body/div/div[2]/div[4]/div/table[2]/tbody/tr[3]/td/table/tbody/tr/td[5]/br[6]')
                 # data = [driver.page_source]
 
-                q.put(my_ip)
+                q.put(driver.service.process.pid)
                 wait = random.randrange(minutes * 60, int(minutes*1.2) * 60)
                 # wait = random.randrange(60, 120)
                 time.sleep(wait)
