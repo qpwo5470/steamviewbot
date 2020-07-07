@@ -60,7 +60,7 @@ def runBrowser(n, q):
 
 if __name__ == '__main__':
     url = input("URL : ")
-    minutes = input("Time to stay in a page (min) : ")
+    minutes = int(input("Time to stay in a page (min) : "))
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, 'shared_preferences')
     shared = open(filename, 'r')
