@@ -1,8 +1,9 @@
-
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
-
-driver = webdriver.Firefox()
+opts = Options()
+opts.headless = True
+driver = webdriver.Firefox(options=opts)
 driver.get("https://api.ipify.org/")
 my_ip = driver.find_element_by_tag_name("pre").text
 print(my_ip)
