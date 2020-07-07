@@ -1,7 +1,7 @@
 #!/bin/bash
 
-killall python3
-killall tor
-killall geckodriver
-killall firefox
-killall xe-daemon
+sudo killall python3
+sudo killall tor
+sudo killall geckodriver
+sudo killall firefox
+sudo killall xe-daemon
