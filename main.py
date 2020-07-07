@@ -12,11 +12,13 @@ import requests
 
 url = ''
 minutes = 0
+show_exceptions = False
 used_ip = {}
 
 def runBrowser(n, q):
     global url
     global minutes
+    global show_exceptions
     while True:
         try:
             with Controller.from_port(port=9053 + n * 2) as c:
@@ -55,13 +57,19 @@ def runBrowser(n, q):
                 driver.stop_client()
                 driver.close()
                 driver.quit()
-        except:
+        except Exception as e:
+            if show_exceptions:
+                q.put(e)
             pass
 
 
 if __name__ == '__main__':
     url = input("URL : ")
     minutes = int(input("Time to stay in a page (min) : "))
+    se = input("Show exceptions (y/n) : ")
+    se = se.lower()
+    if se == 'y':
+        show_exceptions = True
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, 'shared_preferences')
     shared = open(filename, 'r')
