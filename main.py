@@ -15,7 +15,7 @@ minutes = 0
 show_exceptions = False
 used_ip = {}
 
-def runBrowser(n, q):
+def runBrowser(n, q, lq):
     global url
     global minutes
     global show_exceptions
@@ -53,6 +53,8 @@ def runBrowser(n, q):
                 q.put(my_ip)
                 wait = random.randrange(minutes * 60, int(minutes*1.2) * 60)
                 # wait = random.randrange(60, 120)
+                logs = driver.get_log("browser")
+                lq.put(logs)
                 time.sleep(wait)
                 driver.stop_client()
                 driver.close()
@@ -66,7 +68,7 @@ def runBrowser(n, q):
 if __name__ == '__main__':
     url = input("URL : ")
     minutes = int(input("Time to stay in a page (min) : "))
-    se = input("Show exceptions (y/n) : ")
+    se = input("Show details (y/n) : ")
     se = se.lower()
     if se == 'y':
         show_exceptions = True
@@ -80,9 +82,10 @@ if __name__ == '__main__':
 
     view_count = 0
     out_queue = Queue()
+    log_queue = Queue()
     browserProcess = []
     for i in range(process_count):
-        browserProcess.append(Process(target=runBrowser, args=(i, out_queue,)))
+        browserProcess.append(Process(target=runBrowser, args=(i, out_queue, log_queue, )))
         browserProcess[i].start()
 
     try:
@@ -90,6 +93,9 @@ if __name__ == '__main__':
             my_ip = out_queue.get()
             view_count += 1
             print('VIEW COUNT : %d \t %s' % (view_count, my_ip))
+            log = log_queue.get()
+            if show_exceptions:
+                print('LOG : \n%s' % (log))
     except KeyboardInterrupt:
         out_queue.close()
         out_queue.join_thread()
